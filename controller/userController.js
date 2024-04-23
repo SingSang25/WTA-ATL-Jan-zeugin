@@ -10,7 +10,7 @@ export default {
    * @param {import('express').Request} req The request object
    * @param {import('express').Response} res The response object
    */
-  async getUsers (req, res) {
+  async getUsers(req, res) {
     const users = await userRepository.findAll();
     res.send(users);
   },
@@ -21,7 +21,7 @@ export default {
    * @param {import('express').Request} req The request object
    * @param {import('express').Response} res The response object
    */
-  async getUser (req, res) {
+  async getUser(req, res) {
     const user = await userRepository.find(req.params.id);
     if (user === null) {
       res.status(404).send('User not found');
@@ -36,7 +36,7 @@ export default {
    * @param {import('express').Request} req The request object
    * @param {import('express').Response} res The response object
    */
-  async createUser (req, res) {
+  async createUser(req, res) {
     const user = req.body;
     try {
       const registeredUser = await authService.register(user);
@@ -51,7 +51,7 @@ export default {
    * @param {import('express').Request} req The request object
    * @param {import('express').Response} res The response object
    */
-  async updateUser (req, res) {
+  async updateUser(req, res) {
     const user = req.body;
 
     try {
@@ -67,7 +67,7 @@ export default {
    * @param {import('express').Request} req The request object
    * @param {import('express').Response} res The response object
    */
-  async deleteUser (req, res) {
+  async deleteUser(req, res) {
     try {
       await userRepository.remove(req.params.id);
       res.status(204).send('User deleted');
