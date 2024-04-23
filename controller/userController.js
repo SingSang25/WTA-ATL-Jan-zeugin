@@ -75,4 +75,56 @@ export default {
       res.status(400).send(e.message);
     }
   },
+
+  /**
+   * Get the currently logged in user
+   * @param {import('express').Request} req The request object
+   * @param {import('express').Response} res The response object
+   */
+  async getMe(req, res) {
+    const tocken = req.headers.authorization;
+    const user = authService.getUserFromToken(tocken);
+    res.send(user);
+  },
+
+  /**
+   * Update the currently logged in user
+   * @param {import('express').Request} req The request object
+   * @param {import('express').Response} res The response object
+   */
+  async updateMe(req, res) {
+
+    const tocken = req.headers.authorization;
+    const user = req.body;
+    const userDb = authService.getUserFromToken(tocken);
+
+    if (!userDb.isAdmin) {
+      res.status(403).send('Forbidden update user to admin');
+      return;
+    }
+
+    try {
+      await userRepository.update(user.id, user);
+      res.status(200).send(user);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  },
+
+  /**
+   * Delete the currently logged in user
+   * @param {import('express').Request} req The request object
+   * @param {import('express').Response} res The response object
+   */
+  async deleteMe(req, res) {
+    const tocken = req.headers.authorization;
+    const user = authService.getUserFromToken(tocken);
+
+    try {
+      await userRepository.remove(user.id);
+      res.status(204).send('User deleted');
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  },
 };

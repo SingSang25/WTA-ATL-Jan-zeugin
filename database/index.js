@@ -9,7 +9,7 @@ export default {
     await mongoose.connect('mongodb://localhost:27017', {
       user: 'root',
       pass: 'password',
-      dbName: 'api',
+      dbName: 'myblog',
     });
     console.log('Connected to MongoDB');
   }

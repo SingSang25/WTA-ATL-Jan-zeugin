@@ -2,7 +2,7 @@ import Blog from '../model/blogModel.js';
 
 export default {
     /**
-     * Find all users
+     * Find all Blogs
      * @returns {Array<Blog>} List of all blogs
      */
     async findAll() {
@@ -57,4 +57,6 @@ export default {
     async remove(id) {
         return Blog.findByIdAndDelete(id);
     },
+
+
 };

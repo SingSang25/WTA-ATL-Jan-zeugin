@@ -1,5 +1,4 @@
 import blogRepository from '../repository/blogRepository.js';
-import blogService from '../service/blogService.js';
 
 export default {
 
@@ -48,18 +47,6 @@ export default {
         } catch (e) {
             res.status(400).send(e.message);
         }
-    },
-
-    async createComment(req, res) {
-        // TODO
-    },
-
-    async updateComment(req, res) {
-        // TODO
-    },
-
-    async deleteComment(req, res) {
-        // TODO
     },
 
 }
