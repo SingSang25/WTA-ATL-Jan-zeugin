@@ -11,7 +11,7 @@ export default {
    */
   async register(req, res) {
     const data = req.body;
-    if (data.email && data.password && data.userName) {
+    if (data.email && data.password && data.username) {
       try {
         await authService.register(data);
         return res.status(201).json({ message: 'User created' });

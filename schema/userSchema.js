@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const schema = {
-  userName: String,
+  username: String,
   email: String,
   password: String,
   isAdmin: Boolean,

@@ -8,7 +8,7 @@ import userRepository from '../repository/userRepository.js';
  */
 export default {
   async register(data) {
-    if (!data.email || !data.password || !data.userName) {
+    if (!data.email || !data.password || !data.username) {
       throw new Error('Invalid data');
     }
 
@@ -19,28 +19,31 @@ export default {
     }
 
     // Check if username is already in use
-    const existingUserName = await userRepository.findBy({ userName: data.userName });
-    if (existingUserName !== null) {
+    const existingusername = await userRepository.findBy({ username: data.username });
+    if (existingusername !== null) {
       throw new Error('User already exists');
     }
 
     // Hash password
     const hash = await bcrypt.hash(data.password, 10);
     data.password = hash;
+
+    data.isAdmin = false;
+
     // Create and save user
     const registeredUser = await userRepository.create(data);
     return registeredUser;
   },
 
   async login(data) {
-    if ((data.email || data.userName) && data.password) {
+    if ((data.email || data.username) && data.password) {
 
       let user;
 
       if (data.email) {
         user = await userRepository.findBy({ email: data.email });
-      } else if (data.userName) {
-        user = await userRepository.findBy({ userName: data.userName });
+      } else if (data.username) {
+        user = await userRepository.findBy({ username: data.username });
       } else {
         throw new Error('Invalid data');
       }
