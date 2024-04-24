@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import authMiddleware from './middleware/authMiddleware.js';
 import indexRoutes from './routes/index.js';
 import authRoutes from './routes/authRoutes.js';
@@ -8,6 +9,7 @@ import blogeRoutes from './routes/blogRoutes.js';
 
 const server = express();
 
+server.use(cors())
 server.use(bodyParser.json());
 
 server.use('/', indexRoutes);
