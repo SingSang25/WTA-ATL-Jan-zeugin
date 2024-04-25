@@ -7,7 +7,7 @@ dotenv.config();
 const port = 3000;
 
 await database.connect();
-
+await database.createDefaultData();
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

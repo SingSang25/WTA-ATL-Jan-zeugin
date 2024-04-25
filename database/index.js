@@ -1,4 +1,7 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
+import userRepository from "../repository/userRepository.js";
 
 export default {
   /**
@@ -12,5 +15,21 @@ export default {
       dbName: 'myblog',
     });
     console.log('Connected to MongoDB');
-  }
+  },
+
+  async createDefaultData() {
+
+    const data = {
+      username: 'admin',
+      email: 'admin@localhost.ch',
+      password: 'admin',
+      isAdmin: true,
+    }
+    data.password = await bcrypt.hash(data.password, 10);
+    const user = await userRepository.findBy({ username: data.username });
+
+    if (user === null) {
+      await userRepository.create(data)
+    }
+  },
 }
