@@ -14,7 +14,7 @@ server.use(bodyParser.json());
 
 server.use('/', indexRoutes);
 server.use('/auth', authRoutes);
-server.use('/users', authMiddleware, userRoutes);
+server.use('/users', authMiddleware.auth, authMiddleware.isAdmin, userRoutes);
 server.use('/blogs', blogeRoutes);
 
 export default server;

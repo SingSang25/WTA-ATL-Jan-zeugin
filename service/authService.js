@@ -56,8 +56,14 @@ export default {
           // Get private key
           const privateKey = fs.readFileSync('./secrets/private.pem', 'utf8');
 
+          const data = {
+            username: user.username,
+            email: user.email,
+            isAdmin: user.isAdmin
+          };
+
           // Create JWT token
-          const token = jwt.sign({ email: user.email }, privateKey, { algorithm: 'RS256', expiresIn: '1h' });
+          const token = jwt.sign(data, privateKey, { algorithm: 'RS256', expiresIn: '1h' });
 
           return token;
         }
