@@ -7,7 +7,7 @@ import userRepository from '../repository/userRepository.js';
  * AuthService
  */
 export default {
-  async register(data) {
+  async register(data, isAdmin = false) {
     if (!data.email || !data.password || !data.username) {
       throw new Error('Invalid data');
     }
@@ -28,7 +28,7 @@ export default {
     const hash = await bcrypt.hash(data.password, 10);
     data.password = hash;
 
-    data.isAdmin = false;
+    data.isAdmin = isAdmin;
 
     // Create and save user
     const registeredUser = await userRepository.create(data);
@@ -84,6 +84,6 @@ export default {
     } catch (error) {
       throw new Error('Invalid token');
     }
-  }
+  },
 
 }

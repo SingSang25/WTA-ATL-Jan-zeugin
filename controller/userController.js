@@ -39,7 +39,7 @@ export default {
   async createUser(req, res) {
     const user = req.body;
     try {
-      const registeredUser = await authService.register(user);
+      const registeredUser = await authService.register(user, user.isAdmin);
       res.status(201).send(registeredUser);
     } catch (e) {
       res.status(400).send(e.message);
@@ -53,6 +53,11 @@ export default {
    */
   async updateUser(req, res) {
     const user = req.body;
+
+    if (user.password) {
+      const hash = await bcrypt.hash(user.password, 10);
+      user.password = hash;
+    }
 
     try {
       await userRepository.update(req.params.id, user);
@@ -69,60 +74,15 @@ export default {
    */
   async deleteUser(req, res) {
     try {
-      await userRepository.remove(req.params.id);
-      res.status(204).send('User deleted');
-    } catch (e) {
-      res.status(400).send(e.message);
-    }
-  },
+      const userId = req.params.id;
+      const userToDelete = await userRepository.find(userId);
 
-  /**
-   * Get the currently logged in user
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
-   */
-  async getMe(req, res) {
-    const tocken = req.headers.authorization;
-    const user = authService.getUserFromToken(tocken);
-    res.send(user);
-  },
-
-  /**
-   * Update the currently logged in user
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
-   */
-  async updateMe(req, res) {
-
-    const tocken = req.headers.authorization;
-    const user = req.body;
-    const userDb = authService.getUserFromToken(tocken);
-
-    if (!userDb.isAdmin) {
-      res.status(403).send('Forbidden update user to admin');
-      return;
-    }
-
-    try {
-      await userRepository.update(user.id, user);
-      res.status(200).send(user);
-    } catch (e) {
-      res.status(400).send(e.message);
-    }
-  },
-
-  /**
-   * Delete the currently logged in user
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
-   */
-  async deleteMe(req, res) {
-    const tocken = req.headers.authorization;
-    const user = authService.getUserFromToken(tocken);
-
-    try {
-      await userRepository.remove(user.id);
-      res.status(204).send('User deleted');
+      if (userToDelete.isAdmin === true) {
+        res.status(403).send('Administrators cannot be deleted');
+      } else {
+        await userRepository.remove(userId);
+        res.status(204).send('User deleted');
+      }
     } catch (e) {
       res.status(400).send(e.message);
     }
