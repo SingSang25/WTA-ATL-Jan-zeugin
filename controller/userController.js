@@ -54,6 +54,18 @@ export default {
   async updateUser(req, res) {
     const user = req.body;
 
+    let serchUser = await userRepository.findBy({ username: user.username });
+    if (serchUser !== null || serchUser.id !== user.id) {
+      res.status(400).send('Username already in use');
+      return;
+    }
+
+    serchUser = await userRepository.findBy({ email: user.email })
+    if (serchUser !== null || serchUser.id !== user.id) {
+      res.status(400).send('E-mail already in use');
+      return;
+    }
+
     if (user.password) {
       const hash = await bcrypt.hash(user.password, 10);
       user.password = hash;
