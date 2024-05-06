@@ -1,4 +1,5 @@
 import blogRepository from '../repository/blogRepository.js';
+import authService from '../service/authService.js';
 
 export default {
 
@@ -8,7 +9,17 @@ export default {
     },
 
     async createBlog(req, res) {
-        const blog = req.body;
+        const data = req.body;
+        const user = await authService.getUserFromToken(req.headers.authorization);
+
+        const blog = {
+            title: data.title,
+            user: user,
+            createBlog: new Date(),
+            lastUpdate: new Date(),
+            blocks: data.blocks
+        };
+
         try {
             const createdBlog = await blogRepository.create(blog);
             res.status(201).send(createdBlog);

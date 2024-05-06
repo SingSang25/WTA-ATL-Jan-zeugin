@@ -7,7 +7,7 @@ const schema = {
   user: User,
   createBlog: Date,
   lastUpdate: Date,
-  content: String
+  blocks: []
 };
 
 const blogSchema = new mongoose.Schema(schema);

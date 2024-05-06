@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import blogSchema from "../schema/blogSchema.js";
 
+
 /**
  * @class Blog
  * @property {string} _id 
@@ -9,6 +10,7 @@ import blogSchema from "../schema/blogSchema.js";
  * @property {datetime} createBlog
  * @property {datetime} lastUpdate
  * @property {string} content
+ * TODo: Anpassen
  */
 const Blog = new mongoose.model("Blog", blogSchema);
 
