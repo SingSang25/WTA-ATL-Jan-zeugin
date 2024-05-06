@@ -12,6 +12,11 @@ export default {
         const data = req.body;
         const user = await authService.getUserFromToken(req.headers.authorization);
 
+        if (user === null) {
+            res.status(400).send('User not found');
+            return;
+        }
+
         const blog = {
             title: data.title,
             user: user,
