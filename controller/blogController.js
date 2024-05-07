@@ -47,6 +47,18 @@ export default {
     async updateBlog(req, res) {
         const blogId = req.params.id;
         const blog = req.body;
+        const user = await authService.getUserFromToken(req.headers.authorization);
+
+        if (user === null) {
+            res.status(400).send('User not found');
+            return;
+        }
+
+        if (blog.user.id !== user.id) {
+            res.status(403).send('Forbidden');
+            return;
+        }
+
         try {
             const updatedBlog = await blogService.updateBlog(blogId, blog);
             res.status(200).send(updatedBlog);

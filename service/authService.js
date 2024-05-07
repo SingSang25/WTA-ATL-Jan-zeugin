@@ -57,6 +57,7 @@ export default {
           const privateKey = fs.readFileSync('./secrets/private.pem', 'utf8');
 
           const data = {
+            id: user.id,
             username: user.username,
             email: user.email,
             isAdmin: user.isAdmin
