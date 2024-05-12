@@ -69,6 +69,19 @@ export default {
 
     async deleteBlog(req, res) {
         const blogId = req.params.id;
+        const user = await authService.getUserFromToken(req.headers.authorization);
+        const blog = await blogRepository.find(blogId);
+
+        if (user === null) {
+            res.status(400).send('User not found');
+            return;
+        }
+
+        if (user.isAdmin === false || user.id !== blog.user.id) {
+            res.status(403).send('User not allowed to delete this blog');
+            return;
+        }
+
         try {
             await blogRepository.remove(blogId);
             res.status(204).send();
@@ -76,5 +89,4 @@ export default {
             res.status(400).send(e.message);
         }
     },
-
 }
