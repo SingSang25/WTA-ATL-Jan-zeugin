@@ -1,16 +1,15 @@
 import Comment from '../model/commentModel.js';
 
 export default {
-    findAll(blogId) {
-        return Comment.find({ blog: blogId });
+    findAll(blogId, commentId) {
+        return Comment.find({ blog: blogId, _id: commentId });
     },
 
     find(blogId, commentId) {
         return Comment.findOne({ _id: commentId, blog: blogId });
     },
 
-    create(blogId, comment) {
-        comment.blog = blogId;
+    create(comment) {
         const newComment = new Comment(comment);
         return newComment.save();
     },

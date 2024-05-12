@@ -4,16 +4,17 @@ import User from "./userSchema.js";
 
 const schema = {
   user: User,
-  createBlog: Date,
+  createComment: Date,
   lastUpdate: Date,
-  content: String
+  content: String,
+  blogId: String
 };
 
-const blogSchema = new mongoose.Schema(schema);
+const commentSchema = new mongoose.Schema(schema);
 
 // For JSON serialization, transform the user to show "id" instead of "_id"
 // and remove password and version key from the object
-blogSchema.set('toJSON', {
+commentSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = ret._id;
     delete ret._id;
@@ -21,4 +22,4 @@ blogSchema.set('toJSON', {
   }
 })
 
-export default blogSchema;
+export default commentSchema;

@@ -1,9 +1,11 @@
 import commentRepository from '../repository/commentRepository.js';
+import authService from '../service/authService.js';
 
 export default {
     async getComments(req, res) {
-        const blogId = req.params.id;
-        const blog = await commentRepository.findAll(blogId);
+        const blogId = req.params.blogId;
+        const commentId = req.params.commentId;
+        const blog = await commentRepository.findAll(blogId, commentId);
         if (blog === null) {
             res.status(404).send('Blog not found');
             return;
@@ -14,9 +16,20 @@ export default {
 
     async createComment(req, res) {
         const blogId = req.params.id;
-        const comment = req.body;
+        const user = await authService.getUserFromToken(req.headers.authorization);
+
+        console.log(req);
+
+        const comment = {
+            user: user,
+            createComment: new Date(),
+            lastUpdate: new Date(),
+            content: req.body.content,
+            blogId: blogId
+        };
+
         try {
-            const createdComment = await commentRepository.create(blogId, comment);
+            const createdComment = await commentRepository.create(comment);
             res.status(201).send(createdComment);
         } catch (e) {
             res.status(400).send(e.message);
