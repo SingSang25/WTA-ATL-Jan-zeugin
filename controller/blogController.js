@@ -45,17 +45,22 @@ export default {
     },
 
     async updateBlog(req, res) {
-        const blogId = req.params.id;
-        const blog = req.body;
-        const user = await authService.getUserFromToken(req.headers.authorization);
-
-        if (user.isAdmin === false || user.id !== blog.user.id) {
-            res.status(403).send('Forbidden');
-            return;
-        }
-
         try {
-            const updatedBlog = await blogService.updateBlog(blogId, blog);
+            const blogId = req.params.id;
+            let blog = req.body;
+            const oldBlog = await blogRepository.find(blogId);
+            const user = await authService.getUserFromToken(req.headers.authorization);
+
+            if (user.isAdmin === false && user.id !== oldBlog.user.id) {
+                res.status(403).send('Forbidden');
+                return;
+            }
+
+            blog.lastUpdate = new Date();
+            blog.user = oldBlog.user;
+
+
+            const updatedBlog = await blogRepository.update(blogId, blog);
             res.status(200).send(updatedBlog);
         } catch (e) {
             res.status(400).send(e.message);
