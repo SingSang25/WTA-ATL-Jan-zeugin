@@ -1,12 +1,12 @@
 import Comment from '../model/commentModel.js';
 
 export default {
-    findAll(blogId, commentId) {
-        return Comment.find({ blog: blogId, _id: commentId });
+    findAll(blogId) {
+        return Comment.find({ blogId: blogId });
     },
 
     find(blogId, commentId) {
-        return Comment.findOne({ _id: commentId, blog: blogId });
+        return Comment.findOne({ _id: commentId, blogId: blogId });
     },
 
     create(comment) {
@@ -17,14 +17,14 @@ export default {
     update(blogId, commentId, comment) {
         return Comment.findOneAndUpdate({
             _id: commentId,
-            blog: blogId
+            blogId: blogId
         }, comment);
     },
 
     remove(blogId, commentId) {
         return Comment.findOneAndDelete({
             _id: commentId,
-            blog: blogId
+            blogId: blogId
         });
     },
 }

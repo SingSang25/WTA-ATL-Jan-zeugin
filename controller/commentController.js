@@ -4,21 +4,18 @@ import authService from '../service/authService.js';
 export default {
     async getComments(req, res) {
         const blogId = req.params.blogId;
-        const commentId = req.params.commentId;
-        const blog = await commentRepository.findAll(blogId, commentId);
-        if (blog === null) {
+        const comment = await commentRepository.findAll(blogId);
+        if (comment === null) {
             res.status(404).send('Blog not found');
             return;
         }
 
-        res.send(blog.comments);
+        res.send(comment);
     },
 
     async createComment(req, res) {
-        const blogId = req.params.id;
+        const blogId = req.params.blogId;
         const user = await authService.getUserFromToken(req.headers.authorization);
-
-        console.log(req);
 
         const comment = {
             user: user,
