@@ -49,11 +49,11 @@ export default {
       }
 
       if (user !== null) {
-        // Compare password
+        // Passwort vergleichen
         const match = await bcrypt.compare(data.password, user.password);
 
         if (match) {
-          // Get private key
+          // Privaten Schlüssel abrufen
           const privateKey = fs.readFileSync('./secrets/private.pem', 'utf8');
 
           const data = {
@@ -63,7 +63,7 @@ export default {
             isAdmin: user.isAdmin
           };
 
-          // Create JWT token
+          // JWT-Token erstellen
           const token = jwt.sign(data, privateKey, { algorithm: 'RS256', expiresIn: '1h' });
 
           return token;

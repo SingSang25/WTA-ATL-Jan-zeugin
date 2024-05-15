@@ -12,8 +12,8 @@ const schema = {
 
 const commentSchema = new mongoose.Schema(schema);
 
-// For JSON serialization, transform the user to show "id" instead of "_id"
-// and remove password and version key from the object
+// Für die JSON-Serialisierung wandeln Sie den Benutzer so um, dass "id" anstelle von "_id" angezeigt wird.
+// und entfernen Sie Passwort und Versionsschlüssel aus dem Objekt
 commentSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = ret._id;

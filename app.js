@@ -10,5 +10,5 @@ await database.connect();
 await database.createDefaultData();
 
 server.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Beispielanwendung, die auf Port ${port}`);
 });

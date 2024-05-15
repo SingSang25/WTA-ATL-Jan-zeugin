@@ -2,17 +2,17 @@ import Blog from '../model/blogModel.js';
 
 export default {
     /**
-     * Find all Blogs
-     * @returns {Array<Blog>} List of all blogs
+     * Alle Blogs finden
+     * @returns {Array<Blog>} Liste aller Blogs
      */
     async findAll() {
         return Blog.find();
     },
 
     /**
-     * Returns a single blog by id
-     * @param {string} id The id of the blog to find
-     * @returns {Blog} The blog
+     * Liefert ein einzelnes Blog nach id
+     * @param {string} id Die ID des zu suchenden Blogs
+     * @returns {Blog} Der Blog
      */
     async find(id) {
         const blog = await Blog.findOne({ _id: id });
@@ -20,9 +20,9 @@ export default {
     },
 
     /**
-     * Finds a singe blog by filter
-     * @param {object} filter The filter to apply
-     * @returns {Blog|null} The blog or null
+     * Findet ein einzelnes Blog per Filter
+     * @param {object} filter Der anzuwendende Filter
+     * @returns {Blog|null} Der Blog oder null
      */
     async findBy(filter) {
         const blog = await Blog.findOne(filter);
@@ -30,9 +30,9 @@ export default {
     },
 
     /**
-     * Creates a new blog
-     * @param {Blog} blog 
-     * @returns {Blog} The created blog
+     * Erzeugt einen neuen Blog
+     * @param {Blog} blog Der Blog, der angelegt werden soll
+     * @returns {Blog} Der erstellte Blog
      */
     async create(blog) {
         const newBlog = new Blog(blog);
@@ -40,23 +40,21 @@ export default {
     },
 
     /**
-     * Updates a blog by id
-     * @param {string} id The id of the blog to update
-     * @param {Blog} blog The data to update the blog with
-     * @returns {Blog} The updated blog
+     * Aktualisiert einen Blog mit der ID
+     * @param {string} id Die ID des zu aktualisierenden Blogs
+     * @param {Blog} blog Die Daten, mit denen der Blog aktualisiert werden soll
+     * @returns {Blog} Der aktualisierte Blog
      */
     async update(id, blog) {
         return Blog.findByIdAndUpdate(id, blog);
     },
 
     /**
-     * Deletes a blog by id
-     * @param {string} id The id of the blog to delete
-     * @returns {Blog} The deleted blog
+     * Löscht ein Blog nach ID
+     * @param {string} id Die ID des zu löschenden Blogs
+     * @returns {Blog} Der gelöschte Blog
      */
     async remove(id) {
         return Blog.findByIdAndDelete(id);
     },
-
-
 };
