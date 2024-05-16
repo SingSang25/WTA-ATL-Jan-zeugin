@@ -34,7 +34,6 @@ export default {
     },
 
     async updateComment(req, res) {
-        const blogId = req.params.id;
         const commentId = req.params.id;
         const comment = await commentRepository.find(commentId);
         const data = req.body.data;
