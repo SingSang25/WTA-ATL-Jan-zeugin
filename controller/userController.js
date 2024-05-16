@@ -1,14 +1,14 @@
 import userRepository from '../repository/userRepository.js';
 import authService from '../service/authService.js';
-
+import bcrypt from "bcrypt";
 /**
  * User Controller
  */
 export default {
   /**
-   * Get all users
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * Alle Benutzer abrufen
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async getUsers(req, res) {
     const users = await userRepository.findAll();
@@ -16,10 +16,9 @@ export default {
   },
 
   /**
-   * 
-   * Get a single user by id
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * Einen einzelnen Benutzer anhand seiner ID abrufen
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async getUser(req, res) {
     const user = await userRepository.find(req.params.id);
@@ -32,9 +31,9 @@ export default {
   },
 
   /**
-   * Create a user
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * Einen Benutzer erstellen
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async createUser(req, res) {
     const user = req.body;
@@ -47,9 +46,9 @@ export default {
   },
 
   /**
-   * Update a single user by id
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * Einen einzelnen Benutzer nach ID aktualisieren
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async updateUser(req, res) {
     const user = req.body;
@@ -80,9 +79,9 @@ export default {
   },
 
   /**
-   * Delete a single user by id
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * Einen einzelnen Benutzer nach ID löschen
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async deleteUser(req, res) {
     try {

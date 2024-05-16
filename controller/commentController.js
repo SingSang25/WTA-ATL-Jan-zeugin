@@ -36,9 +36,19 @@ export default {
     async updateComment(req, res) {
         const blogId = req.params.id;
         const commentId = req.params.id;
-        const comment = req.body;
+        const comment = await commentRepository.find(commentId);
+        const data = req.body;
+
+        const newComment = {
+            user: comment.user,
+            createComment: comment.createComment,
+            lastUpdate: new Date(),
+            content: data.content,
+            blogId: blogId
+        };
+
         try {
-            const updatedComment = await commentRepository.update(blogId, commentId, comment);
+            const updatedComment = await commentRepository.update(blogId, commentId, newComment);
             res.status(200).send(updatedComment);
         } catch (e) {
             res.status(400).send(e.message);
@@ -46,10 +56,9 @@ export default {
     },
 
     async deleteComment(req, res) {
-        const blogId = req.params.id;
         const commentId = req.params.id;
         try {
-            await commentRepository.remove(blogId, commentId);
+            await commentRepository.remove(commentId);
             res.status(204).send();
         } catch (e) {
             res.status(400).send(e.message);

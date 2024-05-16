@@ -68,17 +68,17 @@ export default {
     },
 
     async deleteBlog(req, res) {
-        const blogId = req.params.id;
-        const user = await authService.getUserFromToken(req.headers.authorization);
-        const blog = await blogRepository.find(blogId);
-
-
-        if (user.isAdmin === false || user.id !== blog.user.id) {
-            res.status(403).send('User not allowed to delete this blog');
-            return;
-        }
-
         try {
+            const blogId = req.params.id;
+            const user = await authService.getUserFromToken(req.headers.authorization);
+            const blog = await blogRepository.find(blogId);
+
+            if (user.isAdmin === false || user.id !== blog.user.id) {
+                res.status(403).send('User not allowed to delete this blog');
+                return;
+            }
+
+
             await blogRepository.remove(blogId);
             res.status(204).send();
         } catch (e) {

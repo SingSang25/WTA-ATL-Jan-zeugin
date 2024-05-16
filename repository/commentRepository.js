@@ -6,18 +6,17 @@ export default {
      * @param {string} commentId Die ID des Blogs
     * @returns {Array<Comment>}  Liste aller Kommentare
      */
-    findAll(commentId) {
+    findAll(blogId) {
         return Comment.find({ blogId: blogId });
     },
 
     /**
      * Gibt einen einzelnen Kommentar zurück
-     * @param {string} blogId Die ID des Blogs
      * @param {string} commentId Die ID des Kommentars
      * @returns {Comment} Der Kommentar
      */
-    find(blogId, commentId) {
-        return Comment.findOne({ _id: commentId, blogId: blogId });
+    find(commentId) {
+        return Comment.findOne({ _id: commentId });
     },
 
     /**
@@ -50,10 +49,9 @@ export default {
      * @param {string} commentId Die ID des Kommentars
      * @returns {Comment} Der gelöschte Kommentar
      */
-    remove(blogId, commentId) {
+    remove(commentId) {
         return Comment.findOneAndDelete({
-            _id: commentId,
-            blogId: blogId
+            _id: commentId
         });
     },
 }
