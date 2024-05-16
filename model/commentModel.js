@@ -9,7 +9,6 @@ import commentSchema from "../schema/commentSchema.js";
  * @property {Date} lastUpdate Das Datum, an dem der Kommentar zuletzt aktualisiert wurde
  * @property {string} content Der Inhalt des Kommentars
  * @property {string} blogId Die ID des Blogs, zu dem der Kommentar gehört
- * @property {string} id Die ID des Kommentars
  */
 const Comment = new mongoose.model("Comment", commentSchema);
 

@@ -37,18 +37,18 @@ export default {
         const blogId = req.params.id;
         const commentId = req.params.id;
         const comment = await commentRepository.find(commentId);
-        const data = req.body;
+        const data = req.body.data;
 
         const newComment = {
             user: comment.user,
             createComment: comment.createComment,
             lastUpdate: new Date(),
             content: data.content,
-            blogId: blogId
+            blogId: comment.blogId
         };
 
         try {
-            const updatedComment = await commentRepository.update(blogId, commentId, newComment);
+            const updatedComment = await commentRepository.update(commentId, newComment);
             res.status(200).send(updatedComment);
         } catch (e) {
             res.status(400).send(e.message);

@@ -36,10 +36,9 @@ export default {
      * @param {Comment} comment Die Daten, mit denen der Kommentar aktualisiert werden soll
      * @returns {Comment} Der aktualisierte Kommentar
      */
-    update(blogId, commentId, comment) {
+    update(commentId, comment) {
         return Comment.findOneAndUpdate({
             _id: commentId,
-            blogId: blogId
         }, comment);
     },
 
