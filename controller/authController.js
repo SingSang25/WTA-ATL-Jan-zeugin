@@ -14,13 +14,13 @@ export default {
     if (data.email && data.password && data.username) {
       try {
         await authService.register(data);
-        return res.status(201).json({ message: 'User created' });
+        return res.status(201).send('User created');
       } catch (err) {
-        return res.status(400).json({ message: err.message });
+        return res.status(400).send(err.message);
       }
     }
 
-    return res.status(400).json({ message: 'Invalid data' });
+    return res.status(400).send('Invalid data');
   },
 
   /**
@@ -35,7 +35,7 @@ export default {
       const token = await authService.login(data);
       return res.status(200).json({ token });
     } catch (err) {
-      return res.status(400).json({ message: err.message });
+      return res.status(400).send(err.message);
     }
   },
 }
