@@ -6,8 +6,8 @@ import authService from '../service/authService.js';
 export default {
   /**
    * Register a new user
-   * @param {import('express').Request} req The request object
-   * @param {import('express').Response} res The response object
+   * @param {import('express').Request} req Das Anfrageobjekt
+   * @param {import('express').Response} res Das Antwortobjekt
    */
   async register(req, res) {
     const data = req.body;

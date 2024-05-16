@@ -5,7 +5,7 @@ import userRepository from "../repository/userRepository.js";
 
 export default {
   /**
-   * Connect to MongoDB
+   * Verbindung zu MongoDB
    * @returns {Promise<void>}
    */
   async connect() {
@@ -17,6 +17,10 @@ export default {
     console.log('Connected to MongoDB');
   },
 
+  /**
+   * Standarddaten erstellen
+   * @returns {Promise<void>}
+   */
   async createDefaultData() {
 
     const data = {

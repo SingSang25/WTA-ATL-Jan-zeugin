@@ -8,77 +8,94 @@ import userRepository from '../repository/userRepository.js';
  */
 export default {
   async register(data, isAdmin = false) {
+
+    // Sind alle erforderlichen Felder vorhanden
     if (!data.email || !data.password || !data.username) {
       throw new Error('Invalid data');
     }
 
-    // Check if e-mail is already in use
+    // Prüfen Sie, ob die E-Mail bereits verwendet wird
     const existingUser = await userRepository.findBy({ email: data.email });
     if (existingUser !== null) {
       throw new Error('User already exists');
     }
 
-    // Check if username is already in use
+    // Prüfen, ob der Benutzername bereits verwendet wird
     const existingusername = await userRepository.findBy({ username: data.username });
     if (existingusername !== null) {
       throw new Error('User already exists');
     }
 
-    // Hash password
+    // Hash-Passwort
     const hash = await bcrypt.hash(data.password, 10);
     data.password = hash;
 
     data.isAdmin = isAdmin;
 
-    // Create and save user
+    // Benutzer erstellen und speichern
     const registeredUser = await userRepository.create(data);
     return registeredUser;
   },
 
+  /**
+   * Meldet einen Benutzer an
+   * @param {object} data Die Anmeldedaten
+   * @returns {string} Der JWT-Token
+   */
   async login(data) {
-    if ((data.email || data.username) && data.password) {
-
-      let user;
-
-      if (data.email) {
-        user = await userRepository.findBy({ email: data.email });
-      } else if (data.username) {
-        user = await userRepository.findBy({ username: data.username });
-      } else {
-        throw new Error('Invalid data');
-      }
-
-      if (user !== null) {
-        // Passwort vergleichen
-        const match = await bcrypt.compare(data.password, user.password);
-
-        if (match) {
-          // Privaten Schlüssel abrufen
-          const privateKey = fs.readFileSync('./secrets/private.pem', 'utf8');
-
-          const data = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            isAdmin: user.isAdmin
-          };
-
-          // JWT-Token erstellen
-          const token = jwt.sign(data, privateKey, { algorithm: 'RS256', expiresIn: '1h' });
-
-          return token;
-        }
-      }
+    if (!((data.email || data.username) && data.password)) {
+      throw new Error('Wrong credentials');
     }
-    throw new Error('Wrong credentials');
+
+    let user; // Benutzer welcher sich anmelden möchte
+
+    // Benutzer anhand der E-Mail oder des Benutzernamens suchen
+    if (data.email) {
+      user = await userRepository.findBy({ email: data.email });
+    } else if (data.username) {
+      user = await userRepository.findBy({ username: data.username });
+    } else {
+      throw new Error('Invalid data');
+    }
+
+    if (user === null) {
+      throw new Error('User not found');
+    }
+
+    // Passwort vergleichen
+    const match = await bcrypt.compare(data.password, user.password);
+
+    if (match) {
+      // Privaten Schlüssel abrufen
+      const privateKey = fs.readFileSync('./secrets/private.pem', 'utf8');
+
+      const data = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin
+      };
+
+      // JWT-Token erstellen
+      const token = jwt.sign(data, privateKey, { algorithm: 'RS256', expiresIn: '1h' });
+
+      return token;
+    } else {
+      throw new Error('Wrong credentials');
+    }
   },
 
+  /**
+   * Gibt den Benutzer zurück der sich mit dem Token authentifiziert hat
+   * @param {string} token Der JWT-Token
+   * @returns {User} Der Benutzer
+   */
   async getUserFromToken(token) {
-    // Get public key
+    // Öffentlichen Schlüssel abrufen
     const publicKey = fs.readFileSync('./secrets/public.pem', 'utf8');
     token = token.replace(/^Bearer\s/, '');
     try {
-      // Verify token
+      // Token verifizieren
       const decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
       const user = await userRepository.findBy({ email: decoded.email });
       return user;
