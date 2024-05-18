@@ -2,6 +2,8 @@
 
 Mit diesem Projekt wird ein Backend für einen Blog erstellt. Es wird eine REST-API bereitgestellt, um Blog-Posts zu erstellen, zu bearbeiten und zu löschen. Die Daten werden in einer MongoDB-Datenbank gespeichert.
 
+Man kann sich registrieren und einloggen. Es gibt auch die Möglichkeit, Kommentare zu den Posts zu erstellen, zu bearbeiten und zu löschen.
+
 ## Einsatzbereich
 
 Dieses Projekt ist für die Verwendung in einem Blog vorgesehen. Es kann als Backend für ein Blog-Frontend verwendet werden. Es kann auch als Backend für eine Blog-App verwendet werden.
@@ -58,7 +60,7 @@ Dieses Projekt ist für die Verwendung in einem Blog vorgesehen. Es kann als Bac
 
 ## Das Frontend
 
-Das Frontend für diesen Blog kann [hier](https://github.com/SingSang25/WTA-ATL-Frontend-Jan-zeugin) gefunden werden.
+Das Frontend ist in einem anderen Repository zu finden: [Blog Frontend](https://github.com/SingSang25/WTA-ATL-Frontend-Jan-zeugin)
 
 ## Lizenz
 
