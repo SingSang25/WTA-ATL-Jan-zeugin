@@ -8,7 +8,7 @@ export default {
             const blogs = await blogRepository.findAll();
             res.send(blogs);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -33,7 +33,7 @@ export default {
             const createdBlog = await blogRepository.create(blog);
             res.status(201).send(createdBlog);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -48,7 +48,7 @@ export default {
 
             res.send(blog);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -71,7 +71,7 @@ export default {
             const updatedBlog = await blogRepository.update(blogId, blog);
             res.status(200).send(updatedBlog);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -90,7 +90,7 @@ export default {
             await blogRepository.remove(blogId);
             res.status(204).send();
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 }

@@ -18,7 +18,7 @@ export default {
       }
       return res.status(400).send('Invalid data');
     } catch (err) {
-      return res.status(400).send(err.message);
+      return res.status(500).send(err.message);
     }
   },
 

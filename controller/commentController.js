@@ -13,7 +13,7 @@ export default {
 
             res.send(comment);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -34,7 +34,7 @@ export default {
             const createdComment = await commentRepository.create(comment);
             res.status(201).send(createdComment);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -55,7 +55,7 @@ export default {
             const updatedComment = await commentRepository.update(commentId, newComment);
             res.status(200).send(updatedComment);
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 
@@ -65,7 +65,7 @@ export default {
             await commentRepository.remove(commentId);
             res.status(204).send();
         } catch (e) {
-            res.status(400).send(e.message);
+            res.status(500).send(e.message);
         }
     },
 }

@@ -15,7 +15,7 @@ export default {
       const users = await userRepository.findAll();
       res.send(users);
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(500).send(e.message);
     }
   },
 
@@ -33,7 +33,7 @@ export default {
       }
       res.send(user);
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(500).send(e.message);
     }
   },
 
@@ -48,7 +48,7 @@ export default {
       const registeredUser = await authService.register(user, user.isAdmin);
       res.status(201).send(registeredUser);
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(500).send(e.message);
     }
   },
 
@@ -80,7 +80,7 @@ export default {
       await userRepository.update(req.params.id, user);
       res.status(200).send(user);
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(500).send(e.message);
     }
   },
 
@@ -101,7 +101,7 @@ export default {
         res.status(204).send('User deleted');
       }
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(500).send(e.message);
     }
   },
 };
