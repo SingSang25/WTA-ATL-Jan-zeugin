@@ -11,8 +11,12 @@ export default {
    * @param {import('express').Response} res Das Antwortobjekt
    */
   async getUsers(req, res) {
-    const users = await userRepository.findAll();
-    res.send(users);
+    try {
+      const users = await userRepository.findAll();
+      res.send(users);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
   },
 
   /**
@@ -21,13 +25,16 @@ export default {
    * @param {import('express').Response} res Das Antwortobjekt
    */
   async getUser(req, res) {
-    const user = await userRepository.find(req.params.id);
-    if (user === null) {
-      res.status(404).send('User not found');
-      return;
+    try {
+      const user = await userRepository.find(req.params.id);
+      if (user === null) {
+        res.status(404).send('User not found');
+        return;
+      }
+      res.send(user);
+    } catch (e) {
+      res.status(400).send(e.message);
     }
-
-    res.send(user);
   },
 
   /**
@@ -36,8 +43,8 @@ export default {
    * @param {import('express').Response} res Das Antwortobjekt
    */
   async createUser(req, res) {
-    const user = req.body;
     try {
+      const user = req.body;
       const registeredUser = await authService.register(user, user.isAdmin);
       res.status(201).send(registeredUser);
     } catch (e) {
@@ -51,26 +58,25 @@ export default {
    * @param {import('express').Response} res Das Antwortobjekt
    */
   async updateUser(req, res) {
-    const user = req.body;
-
-    let serchUser = await userRepository.findBy({ username: user.username });
-    if (serchUser !== null && serchUser.id !== user.id) {
-      res.status(400).send('Username already in use');
-      return;
-    }
-
-    serchUser = await userRepository.findBy({ email: user.email })
-    if (serchUser !== null && serchUser.id !== user.id) {
-      res.status(400).send('E-mail already in use');
-      return;
-    }
-
-    if (user.password) {
-      const hash = await bcrypt.hash(user.password, 10);
-      user.password = hash;
-    }
-
     try {
+      const user = req.body;
+
+      let serchUser = await userRepository.findBy({ username: user.username });
+      if (serchUser !== null && serchUser.id !== user.id) {
+        res.status(400).send('Username already in use');
+        return;
+      }
+
+      serchUser = await userRepository.findBy({ email: user.email })
+      if (serchUser !== null && serchUser.id !== user.id) {
+        res.status(400).send('E-mail already in use');
+        return;
+      }
+
+      if (user.password) {
+        const hash = await bcrypt.hash(user.password, 10);
+        user.password = hash;
+      }
       await userRepository.update(req.params.id, user);
       res.status(200).send(user);
     } catch (e) {

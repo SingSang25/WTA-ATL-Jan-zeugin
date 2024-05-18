@@ -10,17 +10,16 @@ export default {
    * @param {import('express').Response} res Das Antwortobjekt
    */
   async register(req, res) {
-    const data = req.body;
-    if (data.email && data.password && data.username) {
-      try {
+    try {
+      const data = req.body;
+      if (data.email && data.password && data.username) {
         await authService.register(data);
         return res.status(201).send('User created');
-      } catch (err) {
-        return res.status(400).send(err.message);
       }
+      return res.status(400).send('Invalid data');
+    } catch (err) {
+      return res.status(400).send(err.message);
     }
-
-    return res.status(400).send('Invalid data');
   },
 
   /**
@@ -30,8 +29,8 @@ export default {
    * @returns {Promise<void>}
    */
   async login(req, res) {
-    const data = req.body;
     try {
+      const data = req.body;
       const token = await authService.login(data);
       return res.status(200).json({ token });
     } catch (err) {

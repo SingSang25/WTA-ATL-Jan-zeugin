@@ -3,29 +3,34 @@ import authService from '../service/authService.js';
 
 export default {
     async getComments(req, res) {
-        const blogId = req.params.blogId;
-        const comment = await commentRepository.findAll(blogId);
-        if (comment === null) {
-            res.status(404).send('Blog not found');
-            return;
-        }
+        try {
+            const blogId = req.params.blogId;
+            const comment = await commentRepository.findAll(blogId);
+            if (comment === null) {
+                res.status(404).send('Blog not found');
+                return;
+            }
 
-        res.send(comment);
+            res.send(comment);
+        } catch (e) {
+            res.status(400).send(e.message);
+        }
     },
 
     async createComment(req, res) {
-        const blogId = req.params.blogId;
-        const user = await authService.getUserFromToken(req.headers.authorization);
-
-        const comment = {
-            user: user,
-            createComment: new Date(),
-            lastUpdate: new Date(),
-            content: req.body.content,
-            blogId: blogId
-        };
-
         try {
+            const blogId = req.params.blogId;
+            const user = await authService.getUserFromToken(req.headers.authorization);
+
+            // erstelle ein neues Kommentarobjekt
+            const comment = {
+                user: user,
+                createComment: new Date(),
+                lastUpdate: new Date(),
+                content: req.body.content,
+                blogId: blogId
+            };
+
             const createdComment = await commentRepository.create(comment);
             res.status(201).send(createdComment);
         } catch (e) {
@@ -34,19 +39,19 @@ export default {
     },
 
     async updateComment(req, res) {
-        const commentId = req.params.id;
-        const comment = await commentRepository.find(commentId);
-        const data = req.body.data;
-
-        const newComment = {
-            user: comment.user,
-            createComment: comment.createComment,
-            lastUpdate: new Date(),
-            content: data.content,
-            blogId: comment.blogId
-        };
-
         try {
+            const commentId = req.params.id;
+            const comment = await commentRepository.find(commentId);
+            const data = req.body.data;
+
+            // erstelle ein neues Kommentarobjekt
+            const newComment = {
+                user: comment.user,
+                createComment: comment.createComment,
+                lastUpdate: new Date(),
+                content: data.content,
+                blogId: comment.blogId
+            };
             const updatedComment = await commentRepository.update(commentId, newComment);
             res.status(200).send(updatedComment);
         } catch (e) {
@@ -55,8 +60,8 @@ export default {
     },
 
     async deleteComment(req, res) {
-        const commentId = req.params.id;
         try {
+            const commentId = req.params.id;
             await commentRepository.remove(commentId);
             res.status(204).send();
         } catch (e) {

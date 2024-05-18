@@ -4,28 +4,32 @@ import authService from '../service/authService.js';
 export default {
 
     async getBlogs(req, res) {
-        const blogs = await blogRepository.findAll();
-        res.send(blogs);
+        try {
+            const blogs = await blogRepository.findAll();
+            res.send(blogs);
+        } catch (e) {
+            res.status(400).send(e.message);
+        }
     },
 
     async createBlog(req, res) {
-        const data = req.body;
-        const user = await authService.getUserFromToken(req.headers.authorization);
-
-        if (user === null) {
-            res.status(400).send('User not found');
-            return;
-        }
-
-        const blog = {
-            title: data.title,
-            user: user,
-            createBlog: new Date(),
-            lastUpdate: new Date(),
-            blocks: data.blocks
-        };
-
         try {
+            const data = req.body;
+            const user = await authService.getUserFromToken(req.headers.authorization);
+
+            if (user === null) {
+                res.status(400).send('User not found');
+                return;
+            }
+
+            const blog = {
+                title: data.title,
+                user: user,
+                createBlog: new Date(),
+                lastUpdate: new Date(),
+                blocks: data.blocks
+            };
+
             const createdBlog = await blogRepository.create(blog);
             res.status(201).send(createdBlog);
         } catch (e) {
@@ -34,14 +38,18 @@ export default {
     },
 
     async getBlog(req, res) {
-        const blogId = req.params.id;
-        const blog = await blogRepository.find(blogId);
-        if (blog === null) {
-            res.status(404).send('Blog not found');
-            return;
-        }
+        try {
+            const blogId = req.params.id;
+            const blog = await blogRepository.find(blogId);
+            if (blog === null) {
+                res.status(404).send('Blog not found');
+                return;
+            }
 
-        res.send(blog);
+            res.send(blog);
+        } catch (e) {
+            res.status(400).send(e.message);
+        }
     },
 
     async updateBlog(req, res) {
