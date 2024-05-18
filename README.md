@@ -20,6 +20,7 @@ Dieses Projekt ist für die Verwendung in einem Blog vorgesehen. Es kann als Bac
 3. Die API kann unter `http://localhost:3000/` erreicht werden
 4. Der default User ist `admin@localhost.ch` mit dem Passwort `admin`
 5. Ändere der default Account sein Passwort (Über das Frontend)
+6. Das Frontend kann nun gestartet werden
 
 ## API
 
@@ -54,6 +55,10 @@ Dieses Projekt ist für die Verwendung in einem Blog vorgesehen. Es kann als Bac
 - `POST /comment/:blogId/` - Erstellt einen neuen Kommentar
 - `PUT /comment/:blogId/:id` - Aktualisiert einen Kommentar
 - `DELETE /comment/:blogId/:id` - Löscht einen Kommentar
+
+## Das Frontend
+
+Das Frontend für diesen Blog kann [hier](https://github.com/SingSang25/WTA-ATL-Frontend-Jan-zeugin) gefunden werden.
 
 ## Lizenz
 
